@@ -57,10 +57,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        targetPlatform:		
+        targetPlatform:
           - StandaloneWindows64
-          - StandaloneLinux64
-          - Android
 
     steps:
       - uses: actions/checkout@v4
