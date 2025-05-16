@@ -56,10 +56,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 1   # <---- ВАЖНО! запускает по ОДНОЙ платформе за раз
       matrix:
         targetPlatform:
           - StandaloneWindows64
-
+          - StandaloneLinux64
+          - Android
     steps:
       - uses: actions/checkout@v4
         with:
