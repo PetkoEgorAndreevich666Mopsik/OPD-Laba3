@@ -1,8 +1,9 @@
-name: Test and Build Project
+name: Test and Build Desktop
 
 on: 
-  workflow_dispatch: # manual run from actions page
-  push: # on push
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   testProject:
@@ -42,7 +43,7 @@ jobs:
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: ${{ matrix.testMode }} Test Results          
+          checkName: ${{ matrix.testMode }} Test Results
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -50,17 +51,18 @@ jobs:
           name: Test results for ${{ matrix.testMode }}
           path: ${{ steps.tests.outputs.artifactsPath }}
 
-  buildForAllDesiredPlatforms:
+  buildForDesktop:
     needs: testProject
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 1   # <---- ВАЖНО! запускает по ОДНОЙ платформе за раз
+      max-parallel: 1
       matrix:
         targetPlatform:
           - StandaloneWindows64
           - StandaloneLinux64
+
     steps:
       - uses: actions/checkout@v4
         with:
